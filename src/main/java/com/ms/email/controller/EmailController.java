@@ -27,6 +27,9 @@ public class EmailController {
     Email email = new Email();
     BeanUtils.copyProperties(emailDTO, email);
     emailService.sendMail(email);
-    return new ResponseEntity<>(email.getStatusEmail(), HttpStatus.CREATED);
+    if (email.getStatusEmail() == StatusEmail.SENT) {
+      return new ResponseEntity<>(email.getStatusEmail(), HttpStatus.CREATED);
+    }
+    return new ResponseEntity<>(email.getStatusEmail(), HttpStatus.UNPROCESSABLE_ENTITY);
   }
 }
